@@ -1,4 +1,4 @@
-import { BrowserProvider, Contract, parseEther, formatEther } from "ethers";
+import { BrowserProvider, Contract, parseEther, formatEther, type Eip1193Provider } from "ethers";
 
 // ─── ABI (minimal vault) ──────────────────────────────────────────────────────
 
@@ -19,7 +19,7 @@ export async function getProvider(): Promise<BrowserProvider> {
   if (typeof window === "undefined" || !window.ethereum) {
     throw new Error("MetaMask not found. Please install MetaMask.");
   }
-  return new BrowserProvider(window.ethereum as Parameters<typeof BrowserProvider>[0]);
+  return new BrowserProvider(window.ethereum as Eip1193Provider);
 }
 
 export async function connectWallet(): Promise<string> {
