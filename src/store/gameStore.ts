@@ -376,7 +376,7 @@ function runDealerTurn(set: SetFn, get: GetFn, hands: HandState[]) {
 
   while (dealerShouldHit(dealerCards)) {
     const [card, ...rest] = deck;
-    dealerCards = [...dealerCards, card];
+    dealerCards = [...dealerCards, { ...card, hidden: false }];
     deck = rest;
   }
 
