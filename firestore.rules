@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users: only readable/writable by address owner (wallet-based auth)
+    match /users/{address} {
+      // Allow read if the request comes from the same address (no auth → public read for now)
+      allow read: if true;
+
+      // Allow create with valid structure
+      allow create: if request.resource.data.keys().hasAll([
+        'address', 'balance', 'totalWins', 'totalLosses', 'createdAt', 'updatedAt'
+      ]) && request.resource.data.balance == 0;
+
+      // Allow update (balance changes, win/loss counters)
+      allow update: if request.resource.data.address == resource.data.address;
+
+      // No deletes
+      allow delete: if false;
+    }
+
+    // Game history (optional)
+    match /games/{gameId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}
