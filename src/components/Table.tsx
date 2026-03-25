@@ -129,7 +129,7 @@ export default function Table() {
           >
             <div className="bg-casino-black/60 backdrop-blur-sm px-6 py-3 rounded-full border border-casino-gold/20">
               <span className="text-casino-gold/70 text-xs uppercase tracking-widest font-mono">
-                Dealer's Turn…
+                Dealer&apos;s Turn…
               </span>
             </div>
           </motion.div>
