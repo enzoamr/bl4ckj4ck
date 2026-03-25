@@ -8,7 +8,7 @@ import Table from "@/components/Table";
 import WalletPanel from "@/components/WalletPanel";
 
 export default function GamePage() {
-  const { mode, freeBalance, phase, nextRound } = useGameStore();
+  const { mode, freeBalance, phase } = useGameStore();
 
   // Auto-refill free chips if broke
   useEffect(() => {

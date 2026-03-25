@@ -29,17 +29,7 @@ export async function connectWallet(): Promise<string> {
   return accounts[0];
 }
 
-export async function getConnectedAddress(): Promise<string | null> {
-  try {
-    const provider = await getProvider();
-    const accounts = (await provider.send("eth_accounts", [])) as string[];
-    return accounts?.[0] ?? null;
-  } catch {
-    return null;
-  }
-}
-
-export async function switchToCorrectNetwork(): Promise<void> {
+async function switchToCorrectNetwork(): Promise<void> {
   if (typeof window === "undefined" || !window.ethereum) return;
 
   const hexChainId = `0x${CHAIN_ID.toString(16)}`;
@@ -100,10 +90,13 @@ export async function withdrawFromVault(ethAmount: string): Promise<string> {
 export async function getVaultBalance(address: string): Promise<string> {
   if (!CONTRACT_ADDRESS) return "0";
   const provider = await getProvider();
-  const vault    = new Contract(CONTRACT_ADDRESS, VAULT_ABI, provider);
-  const bal = await vault.balances(address);
+  const vault = new Contract(CONTRACT_ADDRESS, VAULT_ABI, provider);
+  const bal   = await vault.balances(address);
   return formatEther(bal as bigint);
 }
+
+// Used internally; exported for potential future use
+export { switchToCorrectNetwork };
 
 // ─── Conversion helpers ───────────────────────────────────────────────────────
 
@@ -132,8 +125,3 @@ export function onAccountChanged(cb: (address: string | null) => void): () => vo
   return () => window.ethereum?.removeListener("accountsChanged", handler);
 }
 
-export function onChainChanged(cb: () => void): () => void {
-  if (typeof window === "undefined" || !window.ethereum) return () => {};
-  window.ethereum.on("chainChanged", cb);
-  return () => window.ethereum?.removeListener("chainChanged", cb);
-}

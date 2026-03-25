@@ -6,16 +6,11 @@ import { useGameStore } from "@/store/gameStore";
 import HandDisplay from "./Hand";
 import BetPanel from "./BetPanel";
 import GameControls from "./GameControls";
-import { handLabel } from "@/lib/gameEngine";
-
 export default function Table() {
   const { phase, dealerCards, playerHands, activeHandIndex } = useGameStore();
 
-  const showDealer   = phase !== "idle" && phase !== "betting";
-  const isResult     = phase === "result";
-  const dealerTotal  = dealerCards.length > 0
-    ? handLabel(dealerCards.filter((c) => !c.hidden))
-    : null;
+  const showDealer = phase !== "idle" && phase !== "betting";
+  const isResult   = phase === "result";
 
   return (
     <div className="relative w-full flex flex-col items-center justify-between min-h-[600px] py-8 px-4">
